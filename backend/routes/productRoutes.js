@@ -17,6 +17,20 @@ productRouter.get('/:name', async(req,res) =>{
     res.status(404).send({ message: 'Product not found' });
   }
 });
+//updatequantity
+productRouter.put('/:name', async(req,res) =>{
+  if(req.body.category != ""){
+    const product = await Product.findOne({name :req.body.name, category:req.body.category});
+  }
+  const product = await Product.findOne({name : req.params.name});
+  if (product) {
+    product.quantity = req.body.quantity;
+    product.save();
+    res.status(200).send({message: 'Quantity updated'});
+  } else {
+    res.status(404).send({ message: 'Product not found' });
+  }
+});
 //add prod
 productRouter.post('/', async (req, res) => {
 
