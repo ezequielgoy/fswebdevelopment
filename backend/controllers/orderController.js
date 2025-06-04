@@ -4,7 +4,7 @@ import Product from '../models/productModel.js';
 
 export const createOrder = async (req, res) => {
   try {
-    const { client, orderItems, startTime, durationTurns } = req.body;
+    const { client, orderItems, startTime, durationTurns, safetyProduct } = req.body;
 
     if (!client || !orderItems || !startTime || !durationTurns) {
       return res.status(400).json({ message: 'Datos incompletos.' });
@@ -52,6 +52,7 @@ if (totalUnits > 2) {
       endTime,
       discountApplied,
       totalPrice,
+      safetyProduct
     });
 
     await newOrder.save();
@@ -173,3 +174,17 @@ export const stormRefund = async (req, res) => {
     res.status(500).json({ message: 'Error interno del servidor.' });
   }
 };
+
+export const getOrdersByName = async (req, res) => {
+  const { name } = req.body;
+  try {
+    const orders = await Order.find({ 'client': name }).populate('orderItems.product');
+    if (orders.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron órdenes para este cliente.' });
+    }
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error('Error al obtener órdenes por nombre:', error);
+    res.status(500).json({ message: 'Error interno del servidor.' });
+  }
+}

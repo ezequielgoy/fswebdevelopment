@@ -20,6 +20,7 @@ const orderSchema = new mongoose.Schema(
     totalPrice: { type: Number, required: true },
     paymentStatus: { type: String, enum:['pending', 'paid' , 'cancelled'], default:'pending'},
     stormRefund: {type:Boolean, default:false},
+    safetyProduct:{type: Number, default:0}
   },
   {
     timestamps: true,
