@@ -4,7 +4,7 @@ import Product from '../models/productModel.js';
 
 export const createOrder = async (req, res) => {
   try {
-    const { client, orderItems, startTime, durationTurns, safetyProduct } = req.body;
+    const { client, orderItems, startTime, durationTurns, safetyProduct, paymentStatus } = req.body;
 
     if (!client || !orderItems || !startTime || !durationTurns) {
       return res.status(400).json({ message: 'Datos incompletos.' });
@@ -30,19 +30,19 @@ export const createOrder = async (req, res) => {
 
     
 
-for (const item of orderItems) {
-  const product = await Product.findById(item.product);
-  totalPrice += product.price * item.quantity * durationTurns;
-  itemQuantity += 1; // O mejor: itemQuantity += item.quantity;
-}
+  for (const item of orderItems) {
+    const product = await Product.findById(item.product);
+   totalPrice += product.price * item.quantity * durationTurns;
+    itemQuantity += 1; // O mejor: itemQuantity += item.quantity;
+  }
 
-let discountApplied = false;
-const totalUnits = orderItems.reduce((acc, item) => acc + item.quantity, 0);
+  let discountApplied = false;
+  const totalUnits = orderItems.reduce((acc, item) => acc + item.quantity, 0);
 
-if (totalUnits > 2) {
-  totalPrice *= 0.8;
-  discountApplied = true;
-}
+  if (totalUnits > 2) {
+   totalPrice *= 0.8;
+   discountApplied = true;
+  }
 
     const newOrder = new Order({
       client,
@@ -52,7 +52,8 @@ if (totalUnits > 2) {
       endTime,
       discountApplied,
       totalPrice,
-      safetyProduct
+      safetyProduct,
+      paymentStatus
     });
 
     await newOrder.save();
@@ -127,7 +128,7 @@ export const updatePaymentStatus = async (req, res) => {
     const { id } = req.query;
     const { paymentStatus } = req.body;
 
-    if (!['pending', 'paid', 'cancelled'].includes(paymentStatus)) {
+    if (!['Pendiente', 'Pagado', 'Cancelado', 'Tormenta'].includes(paymentStatus)) {
       return res.status(400).json({ message: 'Estado de pago inválido.' });
     }
 
@@ -176,7 +177,7 @@ export const stormRefund = async (req, res) => {
 };
 
 export const getOrdersByName = async (req, res) => {
-  const { name } = req.body;
+  const { name } = req.query;
   try {
     const orders = await Order.find({ 'client': name }).populate('orderItems.product');
     if (orders.length === 0) {

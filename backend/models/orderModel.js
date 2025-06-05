@@ -18,7 +18,7 @@ const orderSchema = new mongoose.Schema(
     endTime: {type: Date, required:true},
     discountApplied: {type:Boolean, required:true},
     totalPrice: { type: Number, required: true },
-    paymentStatus: { type: String, enum:['pending', 'paid' , 'cancelled'], default:'pending'},
+    paymentStatus: { type: String, enum:['Pendiente', 'Pagado' , 'Cancelado', 'Tormenta'], default:'Pendiente'},
     stormRefund: {type:Boolean, default:false},
     safetyProduct:{type: Number, default:0}
   },

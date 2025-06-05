@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 
 export default function HomePage() {
@@ -7,6 +7,9 @@ export default function HomePage() {
  const handleNameChange = (e) =>{
   setName(e.target.value);
  }
+ useEffect(() => {
+  clearOrders();
+  },[]);
  const newReserv = () => {
     if(name){
       navigate(`/order/${name}`);
@@ -18,6 +21,9 @@ export default function HomePage() {
     }
   }
 
+const clearOrders = async () =>{
+
+}
 
   return (
     <div>

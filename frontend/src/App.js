@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import OrderPage from './pages/OrderPage';
 import UserInfoPage from './pages/UserInfoPage.jsx';
+import AdminPage from './pages/AdminPage.jsx';
 function App() {
   return (
     <div className="App">
@@ -12,7 +13,7 @@ function App() {
          <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/admin" element={<h1>Admin</h1>} />
+          <Route path="/admin" element={<AdminPage/>} />
           <Route path="/order/:name" element={<OrderPage />} />
           <Route path="/viewOrder/:name" element={<UserInfoPage />} />
         </Routes>
