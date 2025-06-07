@@ -1,7 +1,7 @@
 import React, { useState} from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import DateTimeSelector from '../components/DateTimeSelector';
+import DateTimeSelector from '../components/DateTimeSelector.tsx';
 
 export default function OrderPage() {
   const { name } = useParams();

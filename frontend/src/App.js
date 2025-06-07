@@ -3,7 +3,7 @@ import './App.css';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import OrderPage from './pages/OrderPage';
-import UserInfoPage from './pages/UserInfoPage.jsx';
+import UserInfoPage from './pages/UserInfoPage.tsx';
 import AdminPage from './pages/AdminPage.jsx';
 function App() {
   return (

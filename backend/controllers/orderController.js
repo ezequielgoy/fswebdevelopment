@@ -87,6 +87,8 @@ export const getAvailableProducts = async (req, res) => {
       // Buscar órdenes que solapan con el turno
       const overlappingOrders = await Order.find({
         'orderItems.product': product._id,
+        paymentStatus: { $ne: 'Cancelado' },
+        stormRefund: false,
         startTime: { $lt: end },
         endTime: { $gt: start }
       });

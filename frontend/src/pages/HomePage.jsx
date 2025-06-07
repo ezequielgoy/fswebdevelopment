@@ -11,16 +11,26 @@ export default function HomePage() {
   clearOrders();
   },[]);
  const newReserv = () => {
+  if (!name){
+    alert('Por favor, ingrese su nombre para continuar.');
+    return;
+  }
     if(name){
       navigate(`/order/${name}`);
     }
   }
   const showOrders = () =>{
+   if (!name){
+    alert('Por favor, ingrese su nombre para continuar.');
+    return;
+  } 
     if(name){
       navigate(`/viewOrder/${name}`);
     }
   }
-
+const showAdmin = () =>{
+  navigate('/admin');
+}
 const clearOrders = async () =>{
 
 }
@@ -34,6 +44,8 @@ const clearOrders = async () =>{
         <button onClick={newReserv}>Reservar</button>
         <button onClick={showOrders}>Ver Ordenes</button>
       </div>
+      <button onClick={showAdmin}>Administrar</button>
+
   </div>
   );
 }

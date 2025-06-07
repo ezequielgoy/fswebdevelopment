@@ -1,47 +1,33 @@
 import React, { useState } from 'react';
-import DateTimeSelector from '../components/DateTimeSelector';
-/*
+import DateTimeSelector from '../components/DateTimeSelector.tsx';
+import axios from 'axios';
 
-export default function HomePage() {
- 
-  const [selectedDate, setSelectedDate] = useState(null);
+export default function AdminPage() {
+  const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedEndTime, setSelectedEndTime] = useState('');
 
 
-  return (
-    <div>
-      <h1>Reserva tu equipo de playa</h1>
-      <div>
-      <DateTimeSelector
-        selectedDate={selectedDate}
-        setSelectedDate={setSelectedDate}
-        selectedTime={selectedTime}
-        setselectedTime={setSelectedTime}
-        selectedEndTime={selectedEndTime}
-        setSelectedEndTime={setSelectedEndTime}
-        mode = 'range'
-        dayRangeInHours={48}
-        />
-      </div>
-  </div>
-  );
-}
-*/
-
-
-export default function AdminPage() {
-  const [selectedDate, setSelectedDate] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [isValidRange, setIsValidRange] = useState(false);
-
-  const handleConfirm = () => {
-    if (!isValidRange) return;
-    console.log('🗓 Fecha:', selectedDate);
-    console.log('⏱ Rango horario:', startTime, 'a', endTime);
-    // Aquí podrías realizar alguna consulta, enviar a backend, etc.
-  };
+  const handleConfirm = async () => {
+    
+      try{
+        if(selectedTime && selectedEndTime && selectedTime < selectedEndTime){
+          const res = await axios.put('http://localhost:5000/api/orders/stormRefund',{
+          startTime: selectedDate + 'T' + selectedTime + ':00.000Z',
+          endTime: selectedDate + 'T' + selectedEndTime + ':00.000Z'
+          })
+        if (res.status === 200){
+          alert('Horario confirmado se realizo la cancelacion de las ordenes por tormenta')
+        }else{
+         alert('Por favor, selecciona un rango horario válido');
+        }
+    }
+    }catch(err){
+      alert('Error al confirmar horario: ' + (err.response?.data?.message || 'Error desconocido del servidor.'));
+    }
+    };  
+    
+  
 
   return (
     <div>
@@ -51,21 +37,18 @@ export default function AdminPage() {
         mode="range"
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
-        selectedTime={{ startTime, endTime }}
-        setSelectedTime={({ startTime, endTime }) => {
-          setStartTime(startTime);
-          setEndTime(endTime);
-        }}
-        setIsValidRange={setIsValidRange}
+        selectedTime={selectedTime}
+        setSelectedTime={setSelectedTime}
+        selectedEndTime={selectedEndTime}
+        setSelectedEndTime={setSelectedEndTime}
       />
 
       <button
         onClick={handleConfirm}
-        disabled={!isValidRange}
         style={{
           marginTop: '20px',
           padding: '10px 20px',
-          backgroundColor: isValidRange ? '#007bff' : '#ccc',
+          backgroundColor: '#007bff' ,
           color: 'white',
           border: 'none',
           borderRadius: '5px'
