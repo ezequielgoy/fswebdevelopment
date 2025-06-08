@@ -1,0 +1,99 @@
+@import url('./_variables.css');
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-main);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+h1, h2 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+.product-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+}
+
+button {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.5rem 1.2rem;
+  margin: 0.4rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-weight: 500;
+}
+button:focus{
+    background-color: var(--color-focus);
+}
+
+button:hover {
+  background-color: var(--color-hover);;
+}
+input, select {
+  border: 1px solid #ccc;
+  border-radius: var(--radius);
+  padding: 0.5rem 0.8rem;
+  margin: 0.4rem;
+  font-size: 1rem;
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 1rem;
+  transition: border-color 0.2s;
+}
+
+input:focus, select:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}.grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .product-list {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+}
+
+.adminbtn{
+    background-color: var(--color-text);
+
+}
+.adminbtn:hover{
+    background-color: var(--color-muted);
+}
+.backbtn{
+    margin-top: 3rem;
+    background-color: var(--color-text);
+}
+.backbtn:hover{
+    background-color: var(--color-muted);
+}

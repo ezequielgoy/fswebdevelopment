@@ -2,6 +2,9 @@ import React, { useState} from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import DateTimeSelector from '../components/DateTimeSelector.tsx';
+import '../styles/main.css';
+import '../styles/orderPage.css';
+import Backbtn from '../components/Backbtn.jsx'
 
 export default function OrderPage() {
   const { name } = useParams();
@@ -63,6 +66,7 @@ export default function OrderPage() {
   };
 
 const sendOrder = async () => {
+  
   const startTime = getDateISO(selectedDate, selectedTime);
   const orderItems = products
     .filter(p => selectedQuantities[p._id] && selectedQuantities[p._id] > 0)
@@ -100,16 +104,27 @@ const sendOrder = async () => {
         safetyProduct: safetyGear,
         paymentStatus: payment
       });
-
+      
       alert('Orden enviada correctamente');
+      resetPage();
     } catch (err) {
       console.error('Error al enviar orden:', err);
       alert('Hubo un error al enviar la orden.');
     }
   };
 
+  const resetPage = () =>{
+    setSelectedDate(null);
+    setSelectedTime('');
+    setDurationTurns(1);
+    setProducts([]);
+    setSelectedQuantities({});
+    setSafetyGear(0);
+    setPayment('Pendiente');
+  }
+  
   return (
-    <div>
+    <div className='container'>
 
       <h1>Reserva tu equipo de playa</h1>
       <DateTimeSelector
@@ -120,7 +135,7 @@ const sendOrder = async () => {
         mode = 'single'
         dayRangeInHours={48}
         />
-      <div style={{ marginBottom: '1em' }}>
+      <div>
         <h3>Duración del turno:</h3>
         <select value={durationTurns} onChange={(e) => setDurationTurns(e.target.value)}>
           <option value={1}>30 minutos</option>
@@ -141,9 +156,10 @@ const sendOrder = async () => {
           type="number"
           min="0"
           max={p.availableQuantity}
+          className = "quantity-input"
           value={selectedQuantities[p._id] || ''}
           onChange={(e) => handleQuantityChange(p._id, p.availableQuantity, e.target.value)}
-          style={{ marginLeft: '10px', width: '50px' }}
+          
         />
         </label>
         </div>
@@ -160,7 +176,7 @@ const sendOrder = async () => {
                 max={max}
                 value={safetyGear}
                 onChange={(e) => setSafetyGear(Number(e.target.value))}
-                style={{ marginLeft: '10px', width: '50px' }}
+                 className = "quantity-input"
               />
             </label>
           </div>
@@ -168,26 +184,29 @@ const sendOrder = async () => {
       })()}
     <div>
       <h3>Seleccione metodo de pago</h3>
-      <label>
+      <label className='radio-label'>
         <input
+        className='hidden-radio'
           type="radio"
           value="Pendiente"
           checked={payment === 'Pendiente'}
           onChange={() => setPayment('Pendiente')}
         />
         Efectivo
-        </label>
-        <label>
+      </label>
+      <label className='radio-label'>
         <input
+        className='hidden-radio'
           type="radio"
           value="Pagado"
           checked={payment === 'Pagado'}
           onChange={() => setPayment('Pagado')}
         />
         Tarjeta
-        </label>
+      </label>
     </div>
-    <button onClick={sendOrder}>Reservar turno</button>
+    <button className="submit-btn" onClick={sendOrder}>Reservar turno</button>
+    <Backbtn />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/main.css';
 
 type Props = {
   selectedDate: string;
@@ -86,8 +87,8 @@ const DateTimeSelector: React.FC<Props> = ({
   const timeOptions = selectedDate ? getTimeSlots(selectedDate) : [];
 
   return (
-    <div>
-      <div style={{ marginBottom: '1em' }}>
+    <div className=".container" >
+      <div>
         <h3>Seleccioná un día:</h3>
         {dateOptions.map((opt) => (
           <button
@@ -96,24 +97,19 @@ const DateTimeSelector: React.FC<Props> = ({
               setSelectedDate(opt.value);
               setSelectedTime('');
               setSelectedEndTime('');
-            }}
-            style={{
-              marginRight: '10px',
-              backgroundColor: selectedDate === opt.value ? 'lightblue' : 'white',
-            }}
-          >
+            }}>
             {opt.label}
           </button>
         ))}
       </div>
 
       {selectedDate && timeOptions.length > 0 && (
-        <div style={{ marginBottom: '1em' }}>
+        <div >
           <h3>Seleccioná horario{mode === 'range' ? 's' : ''}:</h3>
           <select
             value={selectedTime}
             onChange={(e) => setSelectedTime(e.target.value)}
-            style={{ marginRight: '1em' }}
+            
           >
             <option value="">-- Hora inicio --</option>
             {timeOptions.map((time) => (

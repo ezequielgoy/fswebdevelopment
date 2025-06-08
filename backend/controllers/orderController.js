@@ -191,3 +191,13 @@ export const getOrdersByName = async (req, res) => {
     res.status(500).json({ message: 'Error interno del servidor.' });
   }
 }
+
+export const getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({}).populate('orderItems.product');
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error('Error al obtener todas las órdenes:', error);
+    res.status(500).json({ message: 'Error interno del servidor.' });
+  }
+};

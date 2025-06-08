@@ -1,10 +1,11 @@
 
-import './App.css';
+import './styles/main.css';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import OrderPage from './pages/OrderPage';
 import UserInfoPage from './pages/UserInfoPage.tsx';
 import AdminPage from './pages/AdminPage.jsx';
+
 function App() {
   return (
     <div className="App">
@@ -20,6 +21,9 @@ function App() {
         </BrowserRouter>
       </main>
       </header>
+      <footer>
+        
+      </footer>
     </div>
   );
 }

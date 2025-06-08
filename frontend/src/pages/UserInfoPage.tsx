@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import '../styles/main.css';
+import Backbtn from '../components/Backbtn.jsx'
 
 type Order = {
   _id: string;
@@ -26,21 +28,7 @@ const UserInfoPage: React.FC = () => {
     }
   };
 
-  // Función para cancelar una orden
-  const cancelOrder = async (orderId: string) => {
-    try {
-      const res = await axios.put(`http://localhost:5000/api/orders/updatePayment?id=${orderId}`, {
-        paymentStatus: 'Cancelado',
-      });
-      if (res.status === 200) {
-        console.log(`Orden ${orderId} cancelada automáticamente.`);
-      }
-    } catch (err) {
-      console.error(`Error al cancelar la orden ${orderId}:`, err);
-    }
-  };
-
-  // useEffect para obtener las órdenes y cancelar automáticamente las que correspondan
+    // useEffect para obtener las órdenes y cancelar automáticamente las que correspondan
   useEffect(() => {
     const processOrders = async () => {
       await fetchClientOrders();
@@ -62,6 +50,21 @@ const UserInfoPage: React.FC = () => {
 
     processOrders();
   }, [name]);
+
+  // Función para cancelar una orden
+  const cancelOrder = async (orderId: string) => {
+    try {
+      const res = await axios.put(`http://localhost:5000/api/orders/updatePayment?id=${orderId}`, {
+        paymentStatus: 'Cancelado',
+      });
+      if (res.status === 200) {
+        console.log(`Orden ${orderId} cancelada automáticamente.`);
+      }
+    } catch (err) {
+      console.error(`Error al cancelar la orden ${orderId}:`, err);
+    }
+  };
+
 
   // Función para manejar el pago de una orden
   const handlePay = (orderId: string) => async () => {
@@ -134,9 +137,10 @@ const UserInfoPage: React.FC = () => {
     );
   });
 
+
   return (
-    <div>
-      <h1>Tus Órdenes {name}</h1>
+    <div className="container">
+      <h1>Tus ordenes {name}</h1>
       <div>
         {filteredOrders.length > 0 ? (
           <ul>
@@ -175,6 +179,7 @@ const UserInfoPage: React.FC = () => {
           <p>No hay órdenes para mostrar.</p>
         )}
       </div>
+      <Backbtn/>
     </div>
   );
 };

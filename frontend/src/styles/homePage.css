@@ -1,0 +1,12 @@
+.input-container {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.input-title{
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}

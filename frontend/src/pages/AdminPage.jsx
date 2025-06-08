@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import DateTimeSelector from '../components/DateTimeSelector.tsx';
 import axios from 'axios';
-
+import '../styles/main.css';
+import Backbtn from '../components/Backbtn.jsx';
 export default function AdminPage() {
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
@@ -30,7 +31,7 @@ export default function AdminPage() {
   
 
   return (
-    <div>
+    <div className="container">
       <h1>Administrador - Seleccionar franja horaria</h1>
 
       <DateTimeSelector
@@ -45,17 +46,11 @@ export default function AdminPage() {
 
       <button
         onClick={handleConfirm}
-        style={{
-          marginTop: '20px',
-          padding: '10px 20px',
-          backgroundColor: '#007bff' ,
-          color: 'white',
-          border: 'none',
-          borderRadius: '5px'
-        }}
+
       >
         Confirmar horario
       </button>
+      <Backbtn/>
     </div>
   );
 }
