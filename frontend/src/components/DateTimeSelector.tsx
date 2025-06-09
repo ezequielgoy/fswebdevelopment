@@ -41,8 +41,8 @@ const DateTimeSelector: React.FC<Props> = ({
     if (labelDate === today) return `Hoy (${formatted})`;
     if (labelDate === tomorrowStr) return `Mañana (${formatted})`;
 
-    const diffDays = Math.floor((date.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-    return `En ${diffDays} días (${formatted})`;
+
+    return `PasadoMañana(${formatted})`;
   };
 
   const getAvailableDates = (): { value: string; label: string }[] => {
@@ -64,7 +64,7 @@ const DateTimeSelector: React.FC<Props> = ({
   const getTimeSlots = (dateStr: string): string[] => {
     const slots: string[] = [];
     const date = new Date(dateStr + 'T00:00:00');
-    const isToday = date.toDateString() === now.toDateString();
+
 
     for (let h = hourStart; h <= hourEnd; h++) {
       for (let m of [0, 30]) {

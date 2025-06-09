@@ -1,0 +1,23 @@
+@import url('./_variables.css');
+.order-ul{
+    list-style: none;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+.order-item{
+    font-weight: 500;
+    border: 2px solid black;
+    border-radius: var(--radius);
+    background-color: #abc3ff;
+    padding: 1rem;
+    margin: 10px;
+    
+}
+.order-btn{
+    justify-content: center;
+    align-items: center;
+    margin-left: 1rem;
+    
+
+}

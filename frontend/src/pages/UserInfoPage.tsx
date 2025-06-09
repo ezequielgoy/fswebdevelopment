@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import '../styles/main.css';
+import '../styles/userInfoPage.css';
 import Backbtn from '../components/Backbtn.jsx'
 
 type Order = {
@@ -19,6 +20,7 @@ const UserInfoPage: React.FC = () => {
   // Función para obtener las órdenes del cliente
   const fetchClientOrders = async () => {
     try {
+
       const res = await axios.get('http://localhost:5000/api/orders/byName', {
         params: { name },
       });
@@ -27,12 +29,12 @@ const UserInfoPage: React.FC = () => {
       console.error('Error al obtener órdenes del cliente:', err);
     }
   };
-
     // useEffect para obtener las órdenes y cancelar automáticamente las que correspondan
   useEffect(() => {
-    const processOrders = async () => {
-      await fetchClientOrders();
+      fetchClientOrders();
+  }, [name]);
 
+  useEffect(() => {
       const now = new Date();
       const twoHoursLater = new Date(now.getTime() + 2 * 60 * 60 * 1000);
 
@@ -40,16 +42,14 @@ const UserInfoPage: React.FC = () => {
       orders.forEach((order) => {
         const orderStartTime = new Date(order.startTime);
         if (
+              
           order.paymentStatus === 'Pendiente' &&
           orderStartTime > twoHoursLater 
         ) {
           cancelOrder(order._id);
         }
       });
-    };
-
-    processOrders();
-  }, [name]);
+  }, [orders]);
 
   // Función para cancelar una orden
   const cancelOrder = async (orderId: string) => {
@@ -113,28 +113,16 @@ const UserInfoPage: React.FC = () => {
   // Filtrar órdenes para mostrar solo las que cumplen con los criterios
   const today = new Date();
  
-  const validateHours = (today: Date, orderDate: Date) => {
-
-    if (today.getDate() <= orderDate.getDate()){
-      if (today.getDate() === orderDate.getDate()){
-        if (today.getHours() >= orderDate.getHours()){
-          return true;
-        }else{
-          return false;
-        }
-      }else{
-        return true;
-      }
-    }else {
-      return false;
-    }
-  };
+const validateHours = (today: Date, orderDate: Date) => {
+  return orderDate >= today;
+};
 
   const filteredOrders = orders.filter((order) => {
     const orderStartTime = new Date(order.startTime);  
     return (
       validateHours(today, orderStartTime) === true
     );
+    
   });
 
 
@@ -143,19 +131,16 @@ const UserInfoPage: React.FC = () => {
       <h1>Tus ordenes {name}</h1>
       <div>
         {filteredOrders.length > 0 ? (
-          <ul>
+          <ul className="order-ul">
             {filteredOrders.map((order) => {
-              const orderStartTime = new Date(order.startTime);
-              const day = orderStartTime.getDate().toString().padStart(2, '0');
-              const month = (orderStartTime.getMonth() + 1).toString().padStart(2, '0');
-              const hours = orderStartTime.getHours().toString().padStart(2, '0');
-              const minutes = orderStartTime.getMinutes().toString().padStart(2, '0');
 
+              const date = order.startTime.slice(5, 10);
+              const time = order.startTime.slice(11, 16);
               return (
-                <li key={order._id}>
+                <li key={order._id} className="order-item">
                   <strong>Total:</strong> ${order.totalPrice} -{' '}
-                  <strong>Fecha:</strong> {day}/{month} -{' '}
-                  <strong>Hora Inicio:</strong> {hours}:{minutes} -{' '}
+                  <strong>Fecha:</strong> {date} -{' '}
+                  <strong>Hora Inicio:</strong> {time} -{' '}
                   <strong>Estado Pago:</strong> {order.paymentStatus}
                   {order.stormRefund ? (
                     <span> (Reembolso por tormenta)</span>
@@ -164,9 +149,9 @@ const UserInfoPage: React.FC = () => {
                       {order.paymentStatus !== 'Cancelado' && (
                         <>
                           {order.paymentStatus !== 'Pagado' && (
-                            <button onClick={handlePay(order._id)}>Pagar</button>
+                            <button className="order-btn" onClick={handlePay(order._id)}>Pagar</button>
                           )}
-                          <button onClick={handleCancel(order._id, order.startTime)}>Cancelar</button>
+                          <button className="order-btn" onClick={handleCancel(order._id, order.startTime)}>Cancelar</button>
                         </>
                       )}
                     </>
