@@ -22,21 +22,21 @@ export const createOrder = async (req, res) => {
     // Calcular total
     let totalPrice = 0;
     let itemQuantity = 0;
-    
+
     for (const item of orderItems) {
       const product = await Product.findById(item.product);
       if(durationTurns === 1){
-           totalPrice = Number(product.price) * Number(item.quantity);
+           totalPrice += Number(product.price) * Number(item.quantity);
       }else{
          totalPrice += Number(product.price) * Number(item.quantity) * Number(durationTurns);
       }
-      itemQuantity += 1;
+      itemQuantity += Number(item.quantity);
     }
 
     let discountApplied = false;
     const totalUnits = orderItems.reduce((acc, item) => acc + item.quantity, 0);
 
-    if (totalUnits >= 2 || itemQuantity >= 2){
+    if (totalUnits > 2 || itemQuantity > 1){
      totalPrice *= '0.9';
      discountApplied = true;
     }

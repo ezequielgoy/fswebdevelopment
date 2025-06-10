@@ -37,12 +37,10 @@ const UserInfoPage: React.FC = () => {
   useEffect(() => {
       const now = new Date();
       const twoHoursLater = new Date(now.getTime() + 2 * 60 * 60 * 1000);
-
       // Cancelar automáticamente las órdenes pendientes con menos de 2 horas de anticipación
       orders.forEach((order) => {
         const orderStartTime = new Date(order.startTime);
         if (
-              
           order.paymentStatus === 'Pendiente' &&
           orderStartTime > twoHoursLater 
         ) {
@@ -117,8 +115,9 @@ const validateHours = (today: Date, orderDate: Date) => {
   return orderDate >= today;
 };
 
-  const filteredOrders = orders.filter((order) => {
-    const orderStartTime = new Date(order.startTime);  
+const filteredOrders = orders.filter((order) => {
+    const orderStartTime= new Date(order.startTime);
+    orderStartTime.setHours(orderStartTime.getHours() +3);
     return (
       validateHours(today, orderStartTime) === true
     );
