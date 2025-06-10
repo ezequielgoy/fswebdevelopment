@@ -43,3 +43,18 @@
 .hidden-radio:checked + .hidden-label{
     background-color: var(--color-focus);
 }
+
+.item-order{
+    font-weight: 500;
+    border: 2px solid black;
+    border-radius: var(--radius);
+    background-color: #abc3ff;
+    padding: 0.5rem;
+    margin-top: 1rem;
+    max-width: 330px;
+    width: flex;
+}
+.security-container{
+  font-weight: 500;
+  margin-top: 1rem;
+}

@@ -48,8 +48,6 @@ export default function OrderPage() {
   const handleQuantityChange = (productId, max, value) => {
     const val = Math.min(Math.max(parseInt(value) || 0, 0), max);
     setSelectedQuantities(prev => ({ ...prev, [productId]: val }));
-
-    console.log(selectedQuantities);
   };
 
   const calculateRequiredSafetyGear = () => {
@@ -151,8 +149,8 @@ const sendOrder = async () => {
 
       <h3>Productos disponibles en el horario elegido</h3>
       {products.map(p => (
-        <div key={p._id}>
-        <label>
+        <div key={p._id} className="item-order">
+        <label >
           {p.name} {p.category} - ${p.price} - Disponibles: {p.availableQuantity}
         <input
           type="number"
@@ -169,8 +167,8 @@ const sendOrder = async () => {
       {(() => {
         const { min, max } = calculateRequiredSafetyGear();
         return min > 0 && (
-          <div>
-            <label>
+          <div className="security-container">
+            <label >
               Cuantos equipos de seguridad necesita({min} a {max}): 
               <input
                 type="number"
