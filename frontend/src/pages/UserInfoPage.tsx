@@ -29,11 +29,11 @@ const UserInfoPage: React.FC = () => {
       console.error('Error al obtener órdenes del cliente:', err);
     }
   };
-    // useEffect para obtener las órdenes y cancelar automáticamente las que correspondan
+
   useEffect(() => {
       fetchClientOrders();
   }, [name]);
-
+    // useEffect para obtener las órdenes y cancelar automáticamente las que correspondan
   useEffect(() => {
       const now = new Date();
       const twoHoursLater = new Date(now.getTime() + 2 * 60 * 60 * 1000);
@@ -136,11 +136,13 @@ const validateHours = (today: Date, orderDate: Date) => {
 
               const date = order.startTime.slice(5, 10);
               const time = order.startTime.slice(11, 16);
+              const endTime = order.endTime.slice(11,16);
               return (
                 <li key={order._id} className="order-item">
                   <strong>Total:</strong> ${order.totalPrice} -{' '}
                   <strong>Fecha:</strong> {date} -{' '}
                   <strong>Hora Inicio:</strong> {time} -{' '}
+                  <strong>Hora Fin: </strong>{endTime} -{' '}
                   <strong>Estado Pago:</strong> {order.paymentStatus}
                   {order.stormRefund ? (
                     <span> (Reembolso por tormenta)</span>

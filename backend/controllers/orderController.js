@@ -22,27 +22,24 @@ export const createOrder = async (req, res) => {
     // Calcular total
     let totalPrice = 0;
     let itemQuantity = 0;
+    
     for (const item of orderItems) {
       const product = await Product.findById(item.product);
-      totalPrice += product.price * item.quantity * durationTurns;
-      
+      if(durationTurns === 1){
+           totalPrice = Number(product.price) * Number(item.quantity);
+      }else{
+         totalPrice += Number(product.price) * Number(item.quantity) * Number(durationTurns);
+      }
+      itemQuantity += 1;
     }
 
-    
+    let discountApplied = false;
+    const totalUnits = orderItems.reduce((acc, item) => acc + item.quantity, 0);
 
-  for (const item of orderItems) {
-    const product = await Product.findById(item.product);
-   totalPrice += product.price * item.quantity * durationTurns;
-    itemQuantity += 1; // O mejor: itemQuantity += item.quantity;
-  }
-
-  let discountApplied = false;
-  const totalUnits = orderItems.reduce((acc, item) => acc + item.quantity, 0);
-
-  if (totalUnits > 2) {
-   totalPrice *= 0.8;
-   discountApplied = true;
-  }
+    if (totalUnits >= 2 || itemQuantity >= 2){
+     totalPrice *= '0.9';
+     discountApplied = true;
+    }
 
     const newOrder = new Order({
       client,
@@ -55,9 +52,9 @@ export const createOrder = async (req, res) => {
       safetyProduct,
       paymentStatus
     });
-
+  
     await newOrder.save();
-
+  
     res.status(201).json({ message: 'Turno reservado exitosamente.', order: newOrder });
 
   } catch (error) {
